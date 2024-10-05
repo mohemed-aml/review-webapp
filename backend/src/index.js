@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Import CORS package
 
 dotenv.config();
 
@@ -12,8 +13,18 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(bodyParser.json());
 
+// Configure CORS
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || '*', // Allow requests from your frontend URL
+  credentials: true, // Enable this if you need to include cookies in the requests
+};
+app.use(cors(corsOptions)); // Apply CORS middleware
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('Connected to MongoDB Atlas');
   })
