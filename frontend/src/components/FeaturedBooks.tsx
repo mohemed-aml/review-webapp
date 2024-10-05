@@ -14,7 +14,7 @@ import {
 type Book = {
   _id: string;
   title: string;
-  author: string;
+  author: string; 
   coverImageUrl: string;
 };
 
@@ -25,9 +25,11 @@ export function FeaturedBooks() {
   React.useEffect(() => {
     const fetchBooks = async () => {
       try {
+        const backendBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
         // const response = await axios.get("/books/top-15"); // Assuming this is the API to fetch top 15 books
-        const response = await axios.get(`/books`, {
-          params: { limit: 10 },
+        const response = await axios.get(`${backendBaseUrl}/books`, {
+          params: { limit: 15 },
         });
         setBooks(response.data.books); // Assuming the response contains the books in response.data.books
       } catch (error) {

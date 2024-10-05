@@ -1,11 +1,13 @@
 // frontend/src/components/Books.tsx
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBooks, setCurrentPage } from '../redux/slices/bookSlice';
-import Filters from './Filters';
-import BookList from './BookList';
-import Pagination from './Pagination';
+import { useSelector } from 'react-redux';
+import { fetchBooks } from '../redux/slices/bookSlice';
 import { RootState, useTypedDispatch } from '../redux/store';
+import BookList from './BookList';
+import Filters from './Filters';
+import Pagination from './Pagination';
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const Books: React.FC = () => {
   const dispatch = useTypedDispatch(); // Use the typed dispatch here

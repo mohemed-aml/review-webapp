@@ -23,7 +23,8 @@ const BookDetails: React.FC = () => {
     // Fetch individual book by ID
     const fetchBook = async () => {
       try {
-        const response = await axios.get(`/books/${id}`);
+        const backendBaseUrl = process.env.REACT_APP_API_BASE_URL;
+        const response = await axios.get(`${backendBaseUrl}/books/${id}`);
         setBook(response.data);
         setLoading(false);
       } catch (error) {

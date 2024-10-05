@@ -1,6 +1,5 @@
-// frontend/src/slices/bookSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // Define the shape of the filter parameters
 interface BookFilters {
@@ -13,15 +12,29 @@ interface BookFilters {
   isbn?: string;
 }
 
+// Get the API base URL from the environment variable
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 // Async action to fetch books based on filters and pagination
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
   async (filters: BookFilters, thunkAPI) => {
     const { limit, page, search, publisher, minRating, genres, isbn } = filters;
-    const response = await axios.get('/books', {
-      params: { limit, page, search, publisher, minRating, genres, isbn },
-    });
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/books`, {
+        params: { limit, page, search, publisher, minRating, genres, isbn },
+      });
+      return response.data;
+    } catch (error) {
+      // Narrow the error type to AxiosError
+      if (axios.isAxiosError(error)) {
+        // You can access the `response` property safely now
+        return thunkAPI.rejectWithValue(error.response?.data || 'Failed to fetch books');
+      } else {
+        // Handle non-Axios errors
+        return thunkAPI.rejectWithValue('An unknown error occurred');
+      }
+    }
   }
 );
 
@@ -71,7 +84,7 @@ const bookSlice = createSlice({
       })
       .addCase(fetchBooks.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || null; // Fixed error typing
+        state.error = action.payload as string; // Fixed error typing
       });
   },
 });
