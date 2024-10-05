@@ -2,7 +2,7 @@
 const admin = require('firebase-admin');
 const User = require('../models/User');
 
-var serviceAccount = require("backend/reviewapp-b1cc2-firebase-adminsdk-o8jzx-a279fe6e21.json");
+// var serviceAccount = require("backend/reviewapp-b1cc2-firebase-adminsdk-o8jzx-a279fe6e21.json");
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({ 
