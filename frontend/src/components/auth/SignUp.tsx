@@ -7,6 +7,7 @@ import { auth } from '../../firebase/firebaseConfig'; // Import your Firebase co
 import { FIREBASE_ERRORS } from '../../firebase/errors'; // Error messages
 import { openModal, closeModal } from '../../redux/slices/authModalSlice'; // Redux actions for modal
 import { RootState } from '../../redux/store'; // RootState type
+import axios from 'axios';
 
 const SignUp: React.FC = () => {
   const dispatch = useDispatch();
@@ -49,10 +50,31 @@ const SignUp: React.FC = () => {
 
   // Close the modal when user signs up successfully
   useEffect(() => {
-    if (userCred) {
-      dispatch(closeModal());
-    }
-  }, [userCred, dispatch]);
+    const createUserInBackend = async () => {
+      if (userCred) {
+        // Get Firebase ID token for the authenticated user
+        const token = await userCred.user.getIdToken();
+
+        // Send token and user data to backend
+        try {
+          await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/create`, {
+            name: userCred.user.displayName || signUpForm.email.split('@')[0],
+            email: userCred.user.email,
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}` // Send the Firebase token in headers
+            }
+          });
+
+          dispatch(closeModal()); // Close modal on success
+        } catch (err) {
+          console.error('Error creating user in backend:', err);
+        }
+      }
+    };
+
+    createUserInBackend();
+  }, [userCred, dispatch, signUpForm.email]);
 
   return (
     <form onSubmit={onSubmit}>

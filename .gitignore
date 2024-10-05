@@ -13,6 +13,8 @@ backend/node_modules/
 frontend/.env
 backend/.env
 
+backend/reviewapp-b1cc2-firebase-adminsdk-o8jzx-a279fe6e21.json
+
 # testing
 /coverage
 

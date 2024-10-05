@@ -227,3 +227,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 3. **Setup Instructions**: Includes clear instructions on how to clone, install dependencies, configure environment variables, and run the project on both backend and frontend.
 4. **Environment Variables**: Describes the `.env` files required for the backend and frontend.
 5. **Deployment**: Instructions on how to deploy both the frontend and backend using Vercel and Railway.
+
+Admin Email: admin@example.com
+Password: Admin1234

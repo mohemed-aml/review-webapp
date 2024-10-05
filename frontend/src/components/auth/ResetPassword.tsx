@@ -6,6 +6,7 @@ import { BsDot } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { auth } from '../../firebase/firebaseConfig';
 import { setUser } from '../../redux/slices/authSlice';
+import { openModal } from '../../redux/slices/authModalSlice';
 
 const ResetPassword: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,13 +58,13 @@ const ResetPassword: React.FC = () => {
       )}
       <Flex alignItems="center" fontSize="9pt" color="blue.500" fontWeight={700} cursor="pointer">
         <Text
-          onClick={() => dispatch(setUser(null))} // Dispatch logout if needed or handle navigation back to login
+          onClick={() => dispatch(openModal({ view: 'login' }))} // Dispatch logout if needed or handle navigation back to login
         >
           LOGIN
         </Text>
         <Icon as={BsDot} />
         <Text
-          onClick={() => dispatch(setUser(null))} // Handle navigation to Sign Up if needed
+          onClick={() => dispatch(openModal({ view: 'signup' }))} // Handle navigation to Sign Up if needed
         >
           SIGN UP
         </Text>
