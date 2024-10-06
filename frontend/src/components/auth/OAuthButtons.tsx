@@ -1,13 +1,72 @@
 // frontend/src/components/auth/OAuthButtons.tsx
 import { Button, Flex, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import axios, { AxiosError } from "axios";
+import React, { useEffect } from "react";
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useDispatch } from "react-redux";
 import { FIREBASE_ERRORS } from "../../firebase/errors";
 import { auth } from '../../firebase/firebaseConfig';
+import { setUser } from "../../redux/slices/authSlice";
 
 const OAuthButtons: React.FC = () => {
+  const dispatch = useDispatch();
   const [ signInWithGoogle, userCred, googleLoading, googleError ] = useSignInWithGoogle(auth);
 
+  useEffect(() => {
+    const checkAndCreateUserInBackend = async () => {
+      if (userCred) {
+        const serializableUser = {
+          uid: userCred.user.uid,
+          email: userCred.user.email,
+          displayName: userCred.user.displayName,
+          emailVerified: userCred.user.emailVerified,
+          photoURL: userCred.user.photoURL,
+        };
+
+        dispatch(setUser(serializableUser)); // Dispatch serializable user info to Redux store
+
+        // Get the Firebase ID token
+        const firebaseUser = userCred.user;
+        const token = await firebaseUser.getIdToken();
+        const backendBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+        try {
+          // Check if the user exists in MongoDB based on Firebase UID
+          await axios.get(`${backendBaseUrl}/users/${firebaseUser.uid}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Send the Firebase token in headers
+            },
+          });
+        } catch (err) {
+          const axiosError = err as AxiosError; // Type assertion to AxiosError
+          if (axiosError.response && axiosError.response.status === 404) {
+            // Create the user if not found
+            try {
+              await axios.post(
+                `${backendBaseUrl}/users/create`,
+                {
+                  name: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
+                  email: firebaseUser.email,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`, // Send the Firebase token in headers
+                  },
+                }
+              );
+            } catch (createErr) {
+              console.error('Error creating user in backend:', createErr);
+            }
+          } else {
+            console.error('Error checking user in backend:', err);
+          }
+        }
+      }
+    };
+
+    checkAndCreateUserInBackend();
+  }, [userCred, dispatch]);
+  
   return (
     <Flex
       direction='column'  
