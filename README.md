@@ -229,4 +229,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 5. **Deployment**: Instructions on how to deploy both the frontend and backend using Vercel and Railway.
 
 Admin Email: admin@example.com
-Password: Admin1234
+Password: AdminUser1234

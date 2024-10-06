@@ -1,5 +1,5 @@
 // frontend/src/components/Login.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
@@ -7,6 +7,8 @@ import { auth } from '../../firebase/firebaseConfig';
 import { setUser } from '../../redux/slices/authSlice';
 import { FIREBASE_ERRORS } from '../../firebase/errors';
 import { openModal } from '../../redux/slices/authModalSlice';
+import axios, { AxiosError } from 'axios';
+import { constSelector } from 'recoil';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,9 +32,56 @@ const Login: React.FC = () => {
     }));
   };
 
-  if (user) {
-    dispatch(setUser(user.user)); // Update Redux store with user info
-  }
+  useEffect(() => {
+    const checkAndCreateUserInBackend = async () => {
+      if (user) {
+        const serializableUser = {
+          uid: user.user.uid,
+          email: user.user.email,
+          displayName: user.user.displayName,
+          emailVerified: user.user.emailVerified,
+          photoURL: user.user.photoURL,
+        };
+    
+        dispatch(setUser(serializableUser)); // Dispatch serializable user info to Redux store
+
+        // Get the Firebase ID token
+        const firebaseUser = user.user;
+        const token = await firebaseUser.getIdToken();
+        const backendBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+        try {
+          // Check if the user exists in MongoDB based on Firebase UID
+          await axios.get(`${backendBaseUrl}/users/${firebaseUser.uid}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Send the Firebase token in headers
+            },
+          });
+        } catch (err) {
+          const axiosError = err as AxiosError; // Type assertion to AxiosError
+          if (axiosError.response && axiosError.response.status === 404) {
+            // Create the user if not found
+            try {
+              await axios.post(`${backendBaseUrl}/users/create`, {
+                name: firebaseUser.displayName || firebaseUser.email?.split('@')[0],
+                email: firebaseUser.email,
+              }, {
+                headers: {
+                  Authorization: `Bearer ${token}`, // Send the Firebase token in headers
+                },
+              });
+            } catch (createErr) {
+              console.error('Error creating user in backend:', createErr);
+            }
+          } else {
+            console.error('Error checking user in backend:', err);
+          }
+        }     
+      }
+    };
+
+    checkAndCreateUserInBackend();
+  }, [user, dispatch]);
 
   return (
     <form onSubmit={onSubmit}>
