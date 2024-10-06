@@ -1,12 +1,17 @@
 import React from 'react';
 import AuthButtons from './AuthButtons'; // Import the adapted AuthButtons component
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/store';
 import UserMenu from './UserMenu'; // Assuming you have UserMenu implemented
-import { User } from 'firebase/auth';
+
+// Modify RightContentProps to use SerializableUser type
+type SerializableUser = {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+};
 
 type RightContentProps = {
-  user?: User | null;
+  user?: SerializableUser | null;
 };
 
 const RightContent: React.FC<RightContentProps> = ({ user }) => {

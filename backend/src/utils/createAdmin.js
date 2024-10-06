@@ -8,10 +8,7 @@ dotenv.config();
 // Create admin user
 const createAdminUser = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
 
     const admin = new User({
       firebaseUID: process.env.FIREBASE_ADMIN_UUID, // This should be the Firebase UID for the admin

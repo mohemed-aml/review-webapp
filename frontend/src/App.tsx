@@ -1,24 +1,36 @@
 // frontend/src/App.tsx
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
-import Books from './components/Books';
-import BookDetails from './components/BookDetails';
-import FeaturedBooks from './components/FeaturedBooks';
-import { Provider, useDispatch } from 'react-redux';
-import store from './redux/store';
-import AuthModal from './components/auth/AuthModal';
 import { ChakraProvider } from '@chakra-ui/react';
-import { setUser } from './redux/slices/authSlice';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import AuthModal from './components/auth/AuthModal';
+import BookDetails from './components/BookDetails';
+import Books from './components/Books';
+import FeaturedBooks from './components/FeaturedBooks';
+import Navbar from './components/Navbar/Navbar';
 import { auth } from './firebase/firebaseConfig';
+import { setUser } from './redux/slices/authSlice';
+import store from './redux/store';
+
+// Function to transform Firebase User object to SerializableUser
+const getSerializableUser = (user: User | null) => {
+  if (!user) return null;
+  return {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+  };
+};
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      dispatch(setUser(user)); // Dispatch the setUser action whenever auth state changes
+      const serializableUser = getSerializableUser(user);
+      dispatch(setUser(serializableUser)); // Dispatch the setUser action whenever auth state changes
     });
 
     return () => unsubscribe(); // Cleanup the listener on unmount

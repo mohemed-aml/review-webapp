@@ -4,17 +4,24 @@ import { Flex, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } f
 import { signOut, User } from "firebase/auth";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import { auth } from "../../../firebase/firebaseConfig"; // Adjust path as per your structure
-import { logout } from "../../../redux/slices/authSlice"; // Redux action to log out
 import { openModal } from "../../../redux/slices/authModalSlice"; // Redux action to open modal
+import { logout } from "../../../redux/slices/authSlice"; // Redux action to log out
+
+// Modify UserMenu to use SerializableUser type
+type SerializableUser = {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+};
 
 type UserMenuProps = {
-  user?: User | null;
+  user?: SerializableUser | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {

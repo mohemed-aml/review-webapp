@@ -1,13 +1,12 @@
 // frontend/src/components/Modal/Auth/SignUp.tsx
-import React, { useState, useEffect } from 'react';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
-import { auth } from '../../firebase/firebaseConfig'; // Import your Firebase config
-import { FIREBASE_ERRORS } from '../../firebase/errors'; // Error messages
-import { openModal, closeModal } from '../../redux/slices/authModalSlice'; // Redux actions for modal
-import { RootState } from '../../redux/store'; // RootState type
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useDispatch } from 'react-redux';
+import { FIREBASE_ERRORS } from '../../firebase/errors'; // Error messages
+import { auth } from '../../firebase/firebaseConfig'; // Import your Firebase config
+import { closeModal, openModal } from '../../redux/slices/authModalSlice'; // Redux actions for modal
 
 const SignUp: React.FC = () => {
   const dispatch = useDispatch();

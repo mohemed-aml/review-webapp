@@ -9,23 +9,33 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // Middleware
 app.use(bodyParser.json());
 
 // Configure CORS
+const allowedOrigins = [
+  'http://localhost:3000',  // Allow local development URL
+  'https://localhost:3000',
+  'https://review-webapp.vercel.app',  // Production URL
+  process.env.FRONTEND_URL,
+];
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*', // Allow requests from your frontend URL
+  origin: function (origin, callback) {
+    // Allow requests with no origin, like mobile apps or curl requests
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true, // Enable this if you need to include cookies in the requests
 };
 app.use(cors(corsOptions)); // Apply CORS middleware
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB Atlas');
   })
