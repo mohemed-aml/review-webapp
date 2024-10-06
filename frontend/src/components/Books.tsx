@@ -7,8 +7,6 @@ import BookList from './BookList';
 import Filters from './Filters';
 import Pagination from './Pagination';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
 const Books: React.FC = () => {
   const dispatch = useTypedDispatch(); // Use the typed dispatch here
   const { books, limit, currentPage, search, publisher, minRating, genres, isbn, filtersApplied } = useSelector(

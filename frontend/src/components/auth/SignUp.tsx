@@ -53,10 +53,11 @@ const SignUp: React.FC = () => {
       if (userCred) {
         // Get Firebase ID token for the authenticated user
         const token = await userCred.user.getIdToken();
+        const backendBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
         // Send token and user data to backend
         try {
-          await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/create`, {
+          await axios.post(`${backendBaseUrl}/users/create`, {
             name: userCred.user.displayName || signUpForm.email.split('@')[0],
             email: userCred.user.email,
           }, {
