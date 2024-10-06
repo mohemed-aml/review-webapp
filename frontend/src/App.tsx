@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AuthModal from './components/auth/AuthModal';
-import BookDetails from './components/BookDetails';
+import BookDetails from './components/BookPage/BookDetails';
 import Books from './components/Books';
 import FeaturedBooks from './components/FeaturedBooks';
 import Navbar from './components/Navbar/Navbar';

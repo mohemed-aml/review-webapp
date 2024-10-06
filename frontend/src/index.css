@@ -79,3 +79,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+.star-svg {
+  display: inline; /* Forces the stars to display inline instead of stacked */
+}

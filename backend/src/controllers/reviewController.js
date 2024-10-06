@@ -10,14 +10,14 @@ const getReviews = async (req, res) => {
       return res.status(400).json({ message: "bookId is required" });
     }
 
-    const reviews = await Review.find({ book: bookId }).populate('user', 'name');
+    const reviews = await Review.find({ book: bookId }).populate('user', '_id name');
     res.json(reviews);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// POST /reviews
+// POST /reviews (Add a new review)
 const addReview = async (req, res) => {
   try {
     const { book, user, rating, comment } = req.body;
@@ -32,11 +32,17 @@ const addReview = async (req, res) => {
       return res.status(404).json({ message: 'Book not found' });
     }
 
+    // Check if the user has already reviewed this book
+    const existingReview = await Review.findOne({ book, user });
+    if (existingReview) {
+      return res.status(400).json({ message: 'User has already reviewed this book' });
+    }
+
     const newReview = new Review({
       book,
       user,
       rating,
-      comment
+      comment,
     });
 
     await newReview.save();
