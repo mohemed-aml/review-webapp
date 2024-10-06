@@ -1,7 +1,7 @@
 // frontend/src/components/Filters.tsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearch, setPublisher, setMinRating, setGenres, setIsbn, setFiltersApplied, resetFilters } from '../redux/slices/bookSlice';
+import { resetFilters, setFiltersApplied, setGenres, setIsbn, setMinRating, setPublisher, setSearch } from '../redux/slices/bookSlice';
 import { RootState } from '../redux/store';
 
 const Filters: React.FC = () => {

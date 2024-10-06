@@ -1,7 +1,7 @@
 // frontend/src/components/RightContent/UserMenu.tsx
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Flex, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from "@chakra-ui/react";
-import { signOut, User } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
 import { IoSparkles } from "react-icons/io5";

@@ -1,9 +1,9 @@
 // frontend/src/redux/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlice';
-import authModalReducer from './slices/authModalSlice';
-import bookReducer from './slices/bookSlice';
 import { useDispatch } from 'react-redux';
+import authModalReducer from './slices/authModalSlice';
+import authReducer from './slices/authSlice';
+import bookReducer from './slices/bookSlice';
 
 const store = configureStore({
   reducer: {

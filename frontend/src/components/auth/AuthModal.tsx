@@ -1,11 +1,11 @@
 // frontend/src/components/Modal/Auth/AuthModal.tsx
-import React, { useEffect, useCallback } from 'react';
+import { Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
+import React, { useCallback, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, Flex } from '@chakra-ui/react';
+import { auth } from '../../firebase/firebaseConfig';
 import { closeModal } from '../../redux/slices/authModalSlice'; // Redux action to close modal
 import { RootState } from '../../redux/store';
-import { auth } from '../../firebase/firebaseConfig';
 import AuthInputs from './AuthInputs';
 import OAuthButtons from './OAuthButtons';
 import ResetPassword from './ResetPassword';

@@ -2,16 +2,16 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentPage } from '../redux/slices/bookSlice';
+import { RootState } from '../redux/store';
 import {
-  Pagination as ShadPagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis,
+  Pagination as ShadPagination,
 } from './ui/pagination';
-import { RootState } from '../redux/store';
 
 const Pagination: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,11 +1,10 @@
 // frontend/src/components/ResetPassword.tsx
-import React, { useState } from 'react';
 import { Button, Flex, Icon, Input, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { BsDot } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { auth } from '../../firebase/firebaseConfig';
-import { setUser } from '../../redux/slices/authSlice';
 import { openModal } from '../../redux/slices/authModalSlice';
 
 const ResetPassword: React.FC = () => {

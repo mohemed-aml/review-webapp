@@ -1,10 +1,10 @@
 // frontend/src/components/Modal/Auth/AuthInputs.tsx
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import Login from './Login';
 import SignUp from './SignUp';
-import { RootState } from '../../redux/store';
-import { Flex } from '@chakra-ui/react';
 
 const AuthInputs: React.FC = () => {
   const { view } = useSelector((state: RootState) => state.authModal);

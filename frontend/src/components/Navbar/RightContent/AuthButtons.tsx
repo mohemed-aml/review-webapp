@@ -1,8 +1,8 @@
 // frontend/src/components/RightContent/AuthButtons.tsx
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from '../../ui/button'; // ShadCN Button component
 import { openModal } from '../../../redux/slices/authModalSlice'; // Redux action to open modal
+import { Button } from '../../ui/button'; // ShadCN Button component
 
 const AuthButtons: React.FC = () => {
   const dispatch = useDispatch();

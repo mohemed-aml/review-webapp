@@ -1,6 +1,5 @@
 // frontend/src/redux/slices/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from 'firebase/auth';
 
 // Define a serializable version of the Firebase User object
 interface SerializableUser {

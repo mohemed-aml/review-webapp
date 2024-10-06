@@ -1,14 +1,13 @@
 // frontend/src/components/Login.tsx
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
-import { auth } from '../../firebase/firebaseConfig';
-import { setUser } from '../../redux/slices/authSlice';
-import { FIREBASE_ERRORS } from '../../firebase/errors';
-import { openModal } from '../../redux/slices/authModalSlice';
 import axios, { AxiosError } from 'axios';
-import { constSelector } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useDispatch } from 'react-redux';
+import { FIREBASE_ERRORS } from '../../firebase/errors';
+import { auth } from '../../firebase/firebaseConfig';
+import { openModal } from '../../redux/slices/authModalSlice';
+import { setUser } from '../../redux/slices/authSlice';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
