@@ -12,6 +12,7 @@ import Navbar from './components/Navbar/Navbar';
 import { auth } from './firebase/firebaseConfig';
 import { setUser } from './redux/slices/authSlice';
 import store from './redux/store';
+import UserProfile from './components/UserProfile/UserProfile';
 
 // Function to transform Firebase User object to SerializableUser
 const getSerializableUser = (user: User | null) => {
@@ -45,6 +46,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<Books />} />
           <Route path="/books/:id" element={<BookDetails />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Provider>
     </ChakraProvider>

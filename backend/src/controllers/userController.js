@@ -63,20 +63,32 @@ const createUser = async (req, res) => {
 
 // GET /users/:id (Retrieve user profile by Firebase UID)
 const getUserProfile = async (req, res) => {
+  const { id } = req.params;
   try {
-    const user = await User.findOne({ firebaseUID: req.params.id });  // Find user by Firebase UID
+    const user = await User.findOne({ firebaseUID: id });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found.' });
     }
+
     res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+  } catch (error) {
+    console.error('Error fetching user by Firebase UID:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
 // PUT /users/:id (Update user profile)
 const updateUserProfile = async (req, res) => {
+  const { id } = req.params;
+  const { name, username, email } = req.body;
+
   try {
+    // Check if username is unique (excluding the current user)
+    const existingUser = await User.findOne({ username, _id: { $ne: id } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already taken. Please choose another one.' });
+    }
+
     const { name, email, favorites } = req.body; // Password updates are handled in Firebase
     const user = await User.findOne({ firebaseUID: req.params.id });
     

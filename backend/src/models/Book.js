@@ -12,6 +12,8 @@ const bookSchema = new mongoose.Schema({
   publishedDate: { type: Date },  // Publication date of the book
   isbn10: { type: String, unique: true },  // ISBN-10 code
   isbn13: { type: String, unique: true },  // ISBN-13 code
+  favorites: { type: Number, default: 0 }, // New field to track the number of users who have added it to favorites
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }], // New field to store review IDs
 });
 
 module.exports = mongoose.model('Book', bookSchema);

@@ -50,6 +50,13 @@ const BookDetails: React.FC = () => {
       const backendBaseUrl = process.env.REACT_APP_API_BASE_URL;
       const token = await auth.currentUser?.getIdToken();
 
+      const payload = {
+        book: id,           // The book ID from the URL (should be valid ObjectId)
+        user: user.uid,     // Firebase UID sent as user ID
+        rating,             // Number rating
+        comment,            // User's review comment
+      };
+
       await axios.post(`${backendBaseUrl}/reviews`, {
         book: id,
         user: user.uid,

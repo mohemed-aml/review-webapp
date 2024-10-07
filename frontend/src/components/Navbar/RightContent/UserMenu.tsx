@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { auth } from "../../../firebase/firebaseConfig"; // Adjust path as per your structure
 import { openModal } from "../../../redux/slices/authModalSlice"; // Redux action to open modal
 import { logout } from "../../../redux/slices/authSlice"; // Redux action to log out
+import { useNavigate } from "react-router-dom";
 
 // Modify UserMenu to use SerializableUser type
 type SerializableUser = {
@@ -26,10 +27,15 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await signOut(auth); // Sign out from Firebase
     dispatch(logout());  // Dispatch the Redux action to reset the auth state
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile'); // Navigate to the UserProfile page
   };
 
   return (
@@ -63,7 +69,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       <MenuList>
         {user ? (
           <>
-            <MenuItem color='gray.600' fontSize={12} fontWeight={700} _hover={{ bg: 'gray.600', color: 'white' }}>
+            <MenuItem color='gray.600' fontSize={12} fontWeight={700} _hover={{ bg: 'gray.600', color: 'white' }} onClick={handleProfileClick}>
               <Flex align="center">
                 <Icon as={CgProfile} fontSize={20} mr={2} />
                 Profile

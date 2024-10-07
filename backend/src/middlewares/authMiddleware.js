@@ -25,12 +25,17 @@ const protect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
 
+    if (!token) {
+      return res.status(401).json({ message: 'Not authorized, no token' });
+    }
+
     try {
       // Verify the token using Firebase Admin SDK
       const decodedToken = await admin.auth().verifyIdToken(token);
       req.user = decodedToken; // Attach Firebase user data to request
       next();
     } catch (error) {
+      console.error('Firebase token verification failed:', error);
       return res.status(401).json({ message: 'Not authorized, token failed' });
     }
   } else {
