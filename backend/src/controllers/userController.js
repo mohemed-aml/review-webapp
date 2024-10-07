@@ -84,21 +84,20 @@ const updateUserProfile = async (req, res) => {
 
   try {
     // Check if username is unique (excluding the current user)
-    const existingUser = await User.findOne({ username, _id: { $ne: id } });
+    const existingUser = await User.findOne({ username, firebaseUID: { $ne: id } });
     if (existingUser) {
       return res.status(400).json({ message: 'Username already taken. Please choose another one.' });
     }
 
-    const { name, email, favorites } = req.body; // Password updates are handled in Firebase
-    const user = await User.findOne({ firebaseUID: req.params.id });
-    
+    const user = await User.findOne({ firebaseUID: id });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Update the user fields
     if (name) user.name = name;
     if (email) user.email = email;
-    if (favorites) user.favorites = favorites; // Update favorites list if provided
+    if (username) user.username = username;
 
     await user.save();
     res.json(user);
