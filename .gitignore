@@ -15,6 +15,7 @@ backend/.env
 
 /frontend/build
 backend/reviewapp-b1cc2-firebase-adminsdk-o8jzx-a279fe6e21.json
+backend/src/scripts
 
 # testing
 /coverage
